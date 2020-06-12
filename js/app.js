@@ -21,29 +21,42 @@
 const sections = document.querySelectorAll("section");
 const navBarList = document.querySelector("#navbar__list");
 
-function createListItem(name) {
-  let listItem = document.createElement("li");
-  listItem.innerHTML = name;
+function createListItem(id, name) {
+  const listItem = document.createElement("li");
+  const anchor = document.createElement("a");
+  anchor.href = `#${id}`;
+  anchor.innerHTML = name;
+  anchor.className = "link";
   listItem.className = `${name.replace(/\s/g, "")}`;
-  listItem.addEventListener("click", () => ScrollToSection(listItem.className));
+  listItem.appendChild(anchor);
   navBarList.appendChild(listItem);
 }
 
-function ScrollToSection(name) {
-  const sectionId = name.toLowerCase();
-  const section = document.querySelector(`#${sectionId}`);
-  const sectionTop = section.offsetTop;
-  SetActiveClass(sectionId);
-  window.scrollTo({ top: sectionTop, behavior: "smooth" });
+function createNav() {
+  sections.forEach((section) =>
+    createListItem(section.id, section.dataset.nav)
+  );
 }
 
 function SetActiveClass(ActivesectionId) {
+  console.log(ActivesectionId);
   sections.forEach(
     (section) =>
       (section.className = section.id === ActivesectionId ? "active" : "")
   );
 }
-function createNav() {
-  sections.forEach((section) => createListItem(section.dataset.nav));
+
+function SmoothScroll() {
+  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+    anchor.addEventListener("click", function (e) {
+      e.preventDefault();
+      SetActiveClass(this.getAttribute("href").substr(1));
+      document.querySelector(this.getAttribute("href")).scrollIntoView({
+        behavior: "smooth",
+      });
+    });
+  });
 }
+
 createNav();
+SmoothScroll();
