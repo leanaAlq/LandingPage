@@ -60,3 +60,5 @@ function SmoothScroll() {
 
 createNav();
 SmoothScroll();
+// detect scrolling
+window.onscroll = function (e) {};
