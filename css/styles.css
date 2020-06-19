@@ -63,6 +63,11 @@ main {
   padding-top: 3em;
 }
 
+li.active {
+  background-color: #cc1;
+  transition: background-color 1000ms linear;
+}
+
 section {
   position: relative;
   min-height: 80vh;

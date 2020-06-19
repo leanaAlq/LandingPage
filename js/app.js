@@ -27,7 +27,8 @@ function createListItem(id, name) {
   anchor.href = `#${id}`;
   anchor.innerHTML = name;
   anchor.className = "link";
-  listItem.className = `${name.replace(/\s/g, "")}`;
+  const className = name[0].toLowerCase() + name.slice(1);
+  listItem.className = `${className.replace(/\s/g, "")}`;
   listItem.appendChild(anchor);
   navBarList.appendChild(listItem);
 }
@@ -40,9 +41,21 @@ function createNav() {
 
 function SetActiveClass(ActivesectionId) {
   console.log(ActivesectionId);
+  let navElements = document.querySelectorAll("#navbar__list li");
   sections.forEach(
     (section) =>
       (section.className = section.id === ActivesectionId ? "active" : "")
+  );
+  navElements.forEach(
+    (element) =>
+      // console.log(
+      //   element.className === ActivesectionId,
+      //   element.className,
+      //   ActivesectionId
+      // )
+      (element.className = element.className.includes(ActivesectionId)
+        ? `${element.className} active`
+        : element.className.replace("active", ""))
   );
 }
 
