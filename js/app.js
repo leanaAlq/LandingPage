@@ -20,7 +20,7 @@
 
 const sections = document.querySelectorAll("section");
 const navBarList = document.querySelector("#navbar__list");
-
+const body = document.querySelector("body");
 function createListItem(id, name) {
   const listItem = document.createElement("li");
   const anchor = document.createElement("a");
@@ -42,21 +42,24 @@ function createNav() {
 function SetActiveClass(ActivesectionId) {
   console.log(ActivesectionId);
   let navElements = document.querySelectorAll("#navbar__list li");
-  sections.forEach(
-    (section) =>
-      (section.className = section.id === ActivesectionId ? "active" : "")
-  );
-  navElements.forEach(
-    (element) =>
-      // console.log(
-      //   element.className === ActivesectionId,
-      //   element.className,
-      //   ActivesectionId
-      // )
-      (element.className = element.className.includes(ActivesectionId)
+
+  sections.forEach((section) => {
+    if (!section.className.includes("active")) {
+      section.className =
+        section.id === ActivesectionId && !section.className.includes("active")
+          ? "active"
+          : "";
+    }
+  });
+  navElements.forEach((element) => {
+    // if (!element.className.includes("active")) {
+    element.className =
+      element.className.includes(ActivesectionId) &&
+      !element.className.includes("active")
         ? `${element.className} active`
-        : element.className.replace("active", ""))
-  );
+        : element.className.replace("active", "");
+    // }
+  });
 }
 
 function SmoothScroll() {
@@ -73,5 +76,14 @@ function SmoothScroll() {
 
 createNav();
 SmoothScroll();
-// detect scrolling
-window.onscroll = function (e) {};
+
+window.onscroll = function (e) {
+  sections.forEach((section) => {
+    if (
+      window.scrollY >
+      section.offsetTop + (section.clientHeight - window.outerHeight)
+    ) {
+      SetActiveClass(section.id);
+    }
+  });
+};
